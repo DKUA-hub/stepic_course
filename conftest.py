@@ -3,20 +3,23 @@ from selenium.webdriver.chrome.options import Options
 import pytest
 
 def pytest_addoption(parser):
-    parser.addoption('--language', action = 'store', default='es',
-                     help = 'Choose language: es, ru')
+    parser.addoption('--language', action = 'store', default=None,
+                     help = 'Choose language..')
 
 @pytest.fixture(scope='function')
 def browser(request):
-    print("\nStarting fixture")
     lang = request.config.getoption('language')
-    print(f"\nUser's language is {lang}")
+    """
     if lang == 'es' or lang == 'ru':
         options = Options()
         options.add_experimental_option('prefs', {'intl.accept_languages': lang})
         browser = webdriver.Chrome(options=options)
     else:
         print("\nERROR: -language must be es or ru")
+    """
+    options = Options()
+    print(options)
+    options.add_experimental_option('prefs', {'intl.accept_languages': lang})
+    browser = webdriver.Chrome(options=options)
     yield browser
-    print("\nBye..")
     browser.quit()
